@@ -1,4 +1,4 @@
---folder_path = '/tmp/input_data'
+--test barnch folder_path = '/tmp/input_data'
 
 --create table
 create external table car_insurance_data(
