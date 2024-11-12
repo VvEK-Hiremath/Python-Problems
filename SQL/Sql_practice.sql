@@ -32,3 +32,41 @@ laptop_views,
 SUM(CASE WHEN device_type IN ('tablet', 'phone') THEN 1 ELSE 0 END)
 AS mobile_views
 FROM viewership;
+
+--Candidates with a variety of skillsets have applied for this role, but we need candidates
+--who know Python, Tableau, and PostgreSQL.
+
+SELECT candidate_id
+FROM candidates
+WHERE skill IN ('Python', 'Tableau', 'PostgreSQL')
+GROUP BY candidate_id
+HAVING COUNT(skill) = 3
+ORDER BY candidate_id;
+
+--To find the top 2 Power Users who sent the most messages on Microsoft Teams in August
+--2022, we need to first determine the count of messages sent by each user, which we'll
+--refer to as "senders"
+
+SELECT
+sender_id,
+COUNT(message_id) AS count_messages
+FROM messages
+WHERE EXTRACT(MONTH FROM sent_date) = '8'
+AND EXTRACT(YEAR FROM sent_date) = '2022'
+GROUP BY sender_id
+ORDER BY count_messages DESC
+LIMIT 2;
+
+--Write a SQL query to get the nth highest salary from the Employee table
+
+CREATE FUNCTION getNthHighestSalary(N INT) 
+RETURNS INT 
+BEGIN
+declare M INT; 
+set M = N - 1; 
+RETURN (
+select distinct Salary
+from Employee
+order by Salary desc limit 1 offset M
+); 
+END
