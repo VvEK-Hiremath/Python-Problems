@@ -39,3 +39,20 @@ from cte1 left join
 cte2 b on cte1.student_id = b.student_id
 and cte1.subject_name = b.subject_name
 order by cte1.student_id, cte1.subject_name
+
+--1251. Average Selling Price
+    
+SELECT 
+    a.product_id,
+    coalesce(ROUND(SUM(a.sales) / NULLIF(SUM(a.units), 0), 2),0) AS average_price
+FROM (
+    SELECT 
+        p.product_id,
+        COALESCE(u.units, 0) AS units,
+        COALESCE(u.units * p.price, 0) AS sales
+    FROM Prices p
+    LEFT JOIN UnitsSold u 
+        ON p.product_id = u.product_id
+        AND u.purchase_date BETWEEN start_date AND end_date
+) a
+GROUP BY a.product_id;
