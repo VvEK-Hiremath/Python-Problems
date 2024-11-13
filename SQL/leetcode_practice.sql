@@ -56,3 +56,17 @@ FROM (
         AND u.purchase_date BETWEEN start_date AND end_date
 ) a
 GROUP BY a.product_id;
+
+
+
+--176. Second Highest Salary
+
+SELECT 
+    CASE
+        WHEN COUNT(DISTINCT salary) > 1 
+        THEN (SELECT MAX(salary) 
+              FROM Employee 
+              WHERE salary < (SELECT MAX(salary) FROM Employee))
+        ELSE NULL
+    END AS SecondHighestSalary
+FROM Employee;
