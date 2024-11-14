@@ -79,3 +79,14 @@ from project a left join
 employee b on a.employee_id = b.employee_id
 group by project_id
 
+--1211. Queries Quality and Percentage
+
+select query_name,round(avg(rating/position),2) as quality,
+round((count(case
+when rating < 3 then 1
+else null
+end)/count(rating)),4) * 100 as poor_query_percentage
+from queries 
+where query_name is not null
+group by query_name
+
