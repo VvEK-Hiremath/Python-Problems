@@ -24,3 +24,14 @@ join employees b on a.reports_to = b.employee_id
 where a.reports_to is not null
 group by b.employee_id, b.name
 order by b.employee_id 
+
+
+--1789. Primary Department for Each Employee
+
+select employee_id, department_id from employee
+where employee_id in (select employee_id from employee
+group by employee_id
+having count(employee_id) = 1)
+union
+select employee_id, department_id from employee
+where primary_flag = 'Y'
