@@ -35,3 +35,11 @@ having count(employee_id) = 1)
 union
 select employee_id, department_id from employee
 where primary_flag = 'Y'
+
+--180. Consecutive Numbers
+
+SELECT DISTINCT t1.num as ConsecutiveNums
+FROM logs t1
+JOIN logs t2 ON t1.id = t2.id - 1
+JOIN logs t3 ON t2.id = t3.id - 1
+WHERE t1.num = t2.num AND t2.num = t3.num;
