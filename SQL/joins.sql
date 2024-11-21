@@ -43,3 +43,28 @@ FROM logs t1
 JOIN logs t2 ON t1.id = t2.id - 1
 JOIN logs t3 ON t2.id = t3.id - 1
 WHERE t1.num = t2.num AND t2.num = t3.num;
+
+
+
+--1164. Product Price at a Given Date
+
+WITH rk AS (
+    SELECT DISTINCT 
+        product_id, 
+        new_price AS price, 
+        RANK() OVER (PARTITION BY product_id ORDER BY change_date DESC) AS rk
+    FROM products p
+    WHERE change_date <= '2019-08-16'
+)
+
+SELECT product_id, price 
+FROM rk
+WHERE rk = 1
+ 
+UNION
+
+SELECT DISTINCT product_id, 10 AS price
+FROM products
+WHERE product_id NOT IN (
+        SELECT product_id FROM products
+        WHERe change_date <= '2019-08-16');
