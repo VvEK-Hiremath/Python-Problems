@@ -8,3 +8,13 @@ from queue)
 select person_name from cte where tw in 
 (select max(tw) from cte
 where tw <=1000)
+
+--1070. Product Sales Analysis III
+  
+with cte as
+(select product_id, year, quantity, price,
+rank() over(partition by product_id order by year) as rn
+from sales)
+
+select product_id, year  as first_year, quantity, price
+from cte where rn = 1
