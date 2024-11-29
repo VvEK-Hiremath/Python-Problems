@@ -32,7 +32,7 @@ Write a solution to find the employees who are high earners in each of the depar
 Return the result table in any order.'''
 
 
-with cte as
+with cte as 
 (select name, salary, departmentId,
 dense_rank() over(partition by departmentId order by salary desc) as rnk
 from Employee)
